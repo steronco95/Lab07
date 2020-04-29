@@ -54,7 +54,9 @@ public class Event {
 	
 	public long OreTotali() {
 		
-		long intervallo = (Duration.between(dataInizio, dataFine).getSeconds())/3600;
+		 
+		
+		long intervallo = (Duration.between(dataInizio, dataFine).getSeconds());
 		
 		return intervallo;
 	}

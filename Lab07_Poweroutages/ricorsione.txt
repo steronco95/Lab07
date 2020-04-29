@@ -1,0 +1,16 @@
+Tatiana, [29.04.20 18:47]
+Faccio una ipotesi: hai seguito la logica dell'esercizio VotiNobel (quello con complessità computazionale 2^N)
+
+Durante il lab suggerivo quest'altra procedura per la ricorsione
+(1) prendere in input la lista parziale dei PowerOutages (già filtrata per un dato nerc),
+ il numero max di anni, il numero max di ore
+
+(2) verificare innanzitutto se l'attuale parziale ha
+ un numero di persone coinvolte > del parziale precedente.
+  Se si, aggiornare la soluzione considerandola uguale al parziale corrente.
+
+(3) definire un ciclo che legge tutta la lista di eventi PowerOutages presenti nel database per quel nerc.
+Ad ogni iterazione verificare che l'evento non sia già nella lista parziale.
+ In questo caso lo si aggiunge e si va a controllare che così facendo siano rispettati
+  i vincoli di max anni e max ore. Da qui si può procedere a richiamare la ricorsione. 
+  E ovviamente c'è anche il backtrack che elimina l'evento appena aggiunto dalla lista parziale.

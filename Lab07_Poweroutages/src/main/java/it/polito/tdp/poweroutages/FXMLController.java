@@ -7,6 +7,7 @@ package it.polito.tdp.poweroutages;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.poweroutages.model.Event;
 import it.polito.tdp.poweroutages.model.Model;
 import it.polito.tdp.poweroutages.model.Nerc;
 import javafx.event.ActionEvent;
@@ -53,8 +54,33 @@ public class FXMLController {
 
     @FXML
     void doSimulation(ActionEvent event) {
+    	
+    	txtResult.clear();
+    	
+    	String anni = txtGetYears.getText();
+    	String ore = txtGetHours.getText();
+    	
+    	
+    		
+    	
+//    	for(Event e : model.listaEventi(cBoxNerc.getValue())) {
+//			txtResult.appendText(e+ " \n");
+//		}
+//    	
+    		model.listaEventi(cBoxNerc.getValue());
+    		
+    		
+    		StringBuffer result = new StringBuffer();
+    		
+    		for(Event e : model.maxEventi(Integer.parseInt(anni), Integer.parseInt(ore))) {
+    			result.append(e).append("\n");
+    		}
+    		
+    		txtResult.appendText("numero massimo persone = " + model.getMaxPersone() + "\n");
+    		txtResult.appendText(result.toString());
+    	}
 
-    }
+    
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
