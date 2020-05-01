@@ -12,7 +12,7 @@ public class TestModel {
 		System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\");
 		
 		
-		Nerc n = new Nerc(12,"MRO");
+		Nerc n = new Nerc(3,"MAAC");
 		
 		List<Event> temp = model.listaEventi(n);
 		StringBuffer result = new StringBuffer();
@@ -22,7 +22,14 @@ public class TestModel {
 		
 		
 		
+		
 		System.out.println(result.toString());
+		
+		System.out.println(model.oreTotali(temp));
+		
+		System.out.println(model.calcolaPersone(temp));
+
+		
 		System.out.println("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\n");
 		
 //		System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\");
@@ -33,16 +40,22 @@ public class TestModel {
 		
 		StringBuffer result1 = new StringBuffer();
 		
-		List<Event> ricorsione = model.maxEventi(4,1000);
+		List<Event> ricorsione = model.maxEventi(5,300);
+		
+		String res = "";
 		
 		for(Event e : ricorsione) {
-			result.append(e).append("\n");
+			res += e.toString() + "\n";
 		}
 		
-		System.out.println(result.toString());
+		System.out.println(res);
 		
+		System.out.println(model.oreTotali(ricorsione));
 		
+		System.out.println(model.getMaxYear() + " " + model.getMaxHour());
 		
+		System.out.println(ricorsione.size());
+		System.out.println(model.calcolaPersone(ricorsione));
 		
 	}
 

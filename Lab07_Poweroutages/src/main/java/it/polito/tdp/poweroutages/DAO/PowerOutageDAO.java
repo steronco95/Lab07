@@ -42,7 +42,7 @@ public class PowerOutageDAO {
 	
 	public List<Event> getEventList(int id){
 		
-		String sql = "SELECT date_event_began, date_event_finished, customers_affected FROM poweroutages p,  nerc n WHERE p.nerc_id = n.id AND n.id = ?";
+		String sql = "SELECT p.id, date_event_began, date_event_finished, customers_affected FROM poweroutages p,  nerc n WHERE p.nerc_id = n.id AND n.id = ?";
 		
 		List<Event> nercList = new ArrayList<>();
 
@@ -56,7 +56,7 @@ public class PowerOutageDAO {
 				LocalDateTime inizio = res.getTimestamp("date_event_began").toLocalDateTime();
 				LocalDateTime fine = res.getTimestamp("date_event_finished").toLocalDateTime();
 				
-				Event e = new Event(inizio,fine,res.getInt("customers_affected"));
+				Event e = new Event(res.getInt("id"),inizio,fine,res.getInt("customers_affected"));
 				nercList.add(e);
 			}
 

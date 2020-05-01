@@ -5,6 +5,7 @@
 package it.polito.tdp.poweroutages;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.poweroutages.model.Event;
@@ -72,12 +73,17 @@ public class FXMLController {
     		
     		StringBuffer result = new StringBuffer();
     		
-    		for(Event e : model.maxEventi(Integer.parseInt(anni), Integer.parseInt(ore))) {
-    			result.append(e).append("\n");
-    		}
+    		List<Event> eventiRicorsione = model.maxEventi(Integer.parseInt(anni), Integer.parseInt(ore));
     		
-    		txtResult.appendText("numero massimo persone = " + model.getMaxPersone() + "\n");
-    		txtResult.appendText(result.toString());
+    		String s = "";
+    		
+    		for(Event e : eventiRicorsione ) {
+    			
+    			s += e.toString() + "\n"; 
+    		}
+    		txtResult.appendText(model.oreTotali(eventiRicorsione) + "\n");
+    		txtResult.appendText("numero massimo persone = " + model.calcolaPersone(eventiRicorsione) + "\n");
+    		txtResult.appendText(s);
     	}
 
     

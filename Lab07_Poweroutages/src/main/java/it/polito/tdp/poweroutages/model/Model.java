@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import static java.util.stream.Collectors.*;
+
+import java.time.Duration;
+
 import static java.util.Comparator.*;
 
 import it.polito.tdp.poweroutages.DAO.PowerOutageDAO;
@@ -43,38 +46,35 @@ public class Model {
 		
 		List<Event> parziale = new ArrayList<>();
 		
-		cerca(parziale);
+		cerca(parziale,0);
+		
 		
 		return bestSoluzione;
 	}
 
-	private void cerca(List<Event> parziale) {
+	private void cerca(List<Event> parziale,int livello) {
 		
 		
 			
 			
-			if( bestSoluzione == null || this.calcolaPersone(parziale) > this.calcolaPersone(bestSoluzione)) {
+			if( bestSoluzione == null || this.calcolaPersone(parziale) > this.calcolaPersone(bestSoluzione) || livello == parziale.size()-1) {
 				bestSoluzione = new ArrayList<>(parziale);
 				
 			}
 		
-		
+			
 		
 		for(Event e : eventiNerc) {
 			if(!parziale.contains(e)) {
 				parziale.add(e);
-				if(rangeAnno(parziale)  && maxOre(parziale)) {
-					cerca(parziale);
-					parziale.remove(e);
+				if(rangeAnno(parziale,e) && maxOre(parziale)) {
 					
-				}
+					cerca(parziale,livello+1);
+					
+					
+				}	
 				parziale.remove(e);
-			
 			}
-			
-			
-				return;
-				
 				
 				
 				
@@ -92,43 +92,57 @@ public class Model {
 		long ore =0;
 		
 		for(Event e : parziale){
-			ore += e.OreTotali();
+			ore += e.OreTotali().toHours();
 		}
 		
 		
 		
-		if((ore/3600) <= this.maxHour) {
+		if(ore <= this.maxHour) {
 			return true;
 		}
 		
 		return false;
 	}
 
-	private boolean rangeAnno(List<Event> parziale) {
+	private boolean rangeAnno(List<Event> parziale, Event e2) {
 		
 		int maxAnno =0;
 		int minAnno =0;
 		
-		for(Event e : parziale) {
-			if(minAnno ==0 || e.getAnno() < minAnno) {
-				minAnno = e.getAnno();
-			}
-		}
 		
-		for(Event e : parziale) {
-			if(maxAnno ==0 || e.getAnno() > maxAnno) {
-				maxAnno = e.getAnno();
-			}
-		}
 		
-		if((maxAnno - minAnno) <= maxYear) {
+		
+		
+			for(Event e : parziale) {
+				if(minAnno ==0 || e.getDataFine().getYear() < minAnno) {
+					minAnno = e.getDataFine().getYear();
+				}
+			}
+			
+			for(Event e : parziale) {
+				if(maxAnno ==0 || e.getDataFine().getYear() > maxAnno) {
+					maxAnno = e.getDataFine().getYear();
+				}
+			}
+		
+		
+		
+//		if(maxAnno ==0 || e2.getDataFine().getYear() > maxAnno) {
+//			maxAnno = e2.getDataFine().getYear();
+//		}
+//		
+//		if(minAnno ==0 || e2.getDataFine().getYear() < minAnno) {
+//			minAnno = e2.getDataFine().getYear();
+//		}
+		
+		if((maxAnno - minAnno) < maxYear) {
 			return true;
 		}
 		
 		return false;
 	}
 
-	private int calcolaPersone(List<Event> parziale) {
+	public int calcolaPersone(List<Event> parziale) {
 		
 		int tot =0;
 		
@@ -140,6 +154,29 @@ public class Model {
 		}
 		
 		return tot;
+	}
+
+	public long oreTotali(List<Event> ricorsione) {
+		
+		long ore =0;
+		
+		for(Event e : ricorsione){
+			ore += e.OreTotali().toHours() ;
+		}
+		
+		
+		
+		return ore;
+	}
+
+	public int getMaxYear() {
+		// TODO Auto-generated method stub
+		return this.maxYear;
+	}
+
+	public int getMaxHour() {
+		// TODO Auto-generated method stub
+		return this.maxHour;
 	}
 	
 		
